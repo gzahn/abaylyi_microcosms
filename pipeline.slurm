@@ -19,12 +19,29 @@ module load miniforge3
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate de-env
 
+# ensure directory structure
+if [ ! -d "./data/raw" ]; then
+mkdir -p ./data/raw
+fi
+
+if [ ! -d "./data/clean" ]; then
+mkdir -p ./data/clean
+fi
+
+if [ ! -d "./output" ]; then
+mkdir -p ./output
+fi
+
+##################################################################
+
 ##### QUALITY CONTROL #####
 
 # step 1: run fastp (no quality trimming???)
 if [ ! -f "./data/clean/V350357263_L03_18_2_clean.fq.gz" ]; then
 ./scripts/01_clean_raw_data.sh
 fi
+
+##################################################################
 
 ##### TAXONOMIC PROFILE #####
 
@@ -36,6 +53,15 @@ if [ ! -f "./data/ref/hash.k2d" ]; then
 if
 
 # run kraken2 if needed
+# find 'last' sample in metadata
+LAST=$(cat ./data/clean_metadata.tsv | cut -f5 | tail -n 1)
+K2OUT=./output/${LAST%_1.fq.gz}_kraken2_output.txt
 
+if [ ! -f $K2OUT ]; then
 ./scripts/02_taxonomic_profile.sh
+fi
+
+##################################################################
+
+##### DEPLETE rRNA #####
 

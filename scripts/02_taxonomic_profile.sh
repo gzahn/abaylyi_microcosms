@@ -11,6 +11,6 @@ REP=./output/${i%_1.fq.gz}_kraken2_report.txt
 OUT=./output/${i%_1.fq.gz}_kraken2_output.txt
 
 # run kraken2
-kraken2 --db data/ref --gzip-compressed --threads 20 --paired --report $REP --output $OUT $FWD $REV
+kraken2 --db ./data/ref --gzip-compressed --threads 20 --paired --report $REP --output $OUT $FWD $REV
 
 done
