@@ -1,7 +1,11 @@
 # big files
 data/raw
 data/clean
+data/ref
 
+# slurm streams
+*.err
+*.out
 
 # History files
 .Rhistory

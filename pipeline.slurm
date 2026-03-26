@@ -12,17 +12,30 @@
 #SBATCH -o /sciclone/home/gzahn/logs/test_%j.out
 #SBATCH -e /sciclone/home/gzahn/logs/test_%j.err
 
+##### SET UP ENVIRONMENT #####
+
 module load miniforge3
 # initialize conda (let it have some control of your $PATH, etc.)
 source "$(conda info --base)/etc/profile.d/conda.sh"
-
 conda activate de-env
+
+##### QUALITY CONTROL #####
 
 # step 1: run fastp (no quality trimming???)
 if [ ! -f "./data/clean/V350357263_L03_18_2_clean.fq.gz" ]; then
 ./scripts/01_clean_raw_data.sh
 fi
 
+##### TAXONOMIC PROFILE #####
+
 # step 2: assign taxonomy with kraken2
 
+# get db if needed
+if [ ! -f "./data/ref/hash.k2d" ]; then
+./scripts/download_kraken2_core_nt.sh
+if
+
+# run kraken2 if needed
+
+./scripts/02_taxonomic_profile.sh
 
